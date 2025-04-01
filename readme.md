@@ -56,6 +56,13 @@ _(Note: Features from the original task description like suggestion lists/button
 └── README.md       # This file
 ```
 
+## Clone the Repo:
+
+``
+git clone https://github.com/RaheesAhmed/ChatGPT-with-Assistant-API.git
+
+````
+
 ## Setup and Installation
 
 **Prerequisites:**
@@ -81,7 +88,7 @@ npm install
 OPENAI_API_KEY=sk-your_openai_api_key_here
 OPENAI_ASSISTANT_ID=asst_your_assistant_id_here
 # PORT=5000 # Optional, defaults to 5000
-```
+````
 
 **2. Frontend Setup:**
 
@@ -121,11 +128,3 @@ npm run dev
 ```
 
 The frontend will typically run on `http://localhost:3000`. Open this URL in your browser.
-
-## Development Notes
-
-- **Icons:** Placeholder SVGs are used for icons in some components. Consider replacing them with a dedicated library like `lucide-react` for consistency.
-- **Error Handling:** Basic error handling is implemented. More specific error checks (e.g., distinguishing between network errors and API errors) can be added.
-- **History Loading:** Selecting a chat from the sidebar fetches the history from OpenAI. For very long histories, consider implementing pagination on the backend and frontend.
-- **State Management:** Currently uses `useState`, `useRef`, and `useCallback`. For larger applications, consider libraries like Zustand or Redux.
-- **Backend Persistence:** The backend currently doesn't persist thread information (other than OpenAI storing it). For production, you might want to store thread metadata (like user association) in a database.
