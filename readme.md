@@ -2,6 +2,8 @@
 
 This project implements a chat interface using React (Next.js) for the frontend and Node.js (Express) for the backend, connecting to the OpenAI Assistant API. It supports real-time streaming responses and chat history management.
 
+![AI Chat Interface Screenshot](./client/public/screenshot.png)
+
 ## Features Implemented
 
 **Frontend (Client - Next.js):**
