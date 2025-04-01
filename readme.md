@@ -60,10 +60,10 @@ _(Note: Features from the original task description like suggestion lists/button
 
 ## Clone the Repo:
 
-``
+```
 git clone https://github.com/RaheesAhmed/ChatGPT-with-Assistant-API.git
 
-````
+```
 
 ## Setup and Installation
 
@@ -90,7 +90,7 @@ npm install
 OPENAI_API_KEY=sk-your_openai_api_key_here
 OPENAI_ASSISTANT_ID=asst_your_assistant_id_here
 # PORT=5000 # Optional, defaults to 5000
-````
+```
 
 **2. Frontend Setup:**
 
