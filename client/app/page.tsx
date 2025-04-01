@@ -7,7 +7,7 @@ import Sidebar from '../components/Sidebar';
 import ChatMessage from '../components/ChatMessage';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { BrainCircuit, ThermometerSun, BookOpenText, Feather } from 'lucide-react';
+import { BrainCircuit, ThermometerSun, BookOpenText, Feather, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 
 // Define an interface for chat messages
 interface Message {
@@ -60,6 +60,7 @@ const App = () => {
   const [error, setError] = useState<string | null>(null);
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
   const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // State for sidebar collapse
 
   const inputRef = useRef<HTMLInputElement>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
@@ -369,20 +370,38 @@ const App = () => {
       }, 0);
   };
 
+  // --- Toggle Sidebar Function ---
+  const toggleSidebar = useCallback(() => {
+    setIsSidebarOpen(prev => !prev);
+  }, []);
+
   return (
-    // Main container using flex for sidebar + main content
+    // Main container using flex
     <div className="flex h-screen bg-background text-foreground">
-      {/* Sidebar */}
+      {/* Sidebar - pass down state and toggle function */}
       <Sidebar 
         chatSessions={chatSessions}
         activeChatId={activeChatId}
         onNewChat={handleNewChat}
         onSelectChat={handleSelectChat}
         onDeleteAllChats={handleDeleteAllChats}
+        isOpen={isSidebarOpen}      // Pass state
+        onToggle={toggleSidebar}   // Pass toggle function
       />
 
-      {/* Main Chat Area */}
-      <div className="flex flex-col flex-grow">
+      {/* Main Chat Area - Flex grow handles width adjustment */}
+      <div className="flex flex-col flex-grow overflow-hidden"> {/* Added overflow-hidden */}
+         {/* Toggle Button for Sidebar (positioned absolutely relative to main chat area) */}
+         <Button 
+            variant="ghost"
+            size="icon"
+            className="absolute top-2.5 left-2 z-20 text-muted-foreground hover:text-foreground" // Position top-left
+            onClick={toggleSidebar}
+            aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
+         >
+             {isSidebarOpen ? <PanelLeftClose className="h-5 w-5" /> : <PanelLeftOpen className="h-5 w-5" />}
+         </Button>
+
        
 
         {/* Message History Area OR Chat Starters */}
@@ -440,9 +459,9 @@ const App = () => {
                <div className="relative flex items-center gap-2 p-2 bg-card border border-border rounded-lg shadow-lg">
                   <Input
                      ref={inputRef}
-                     type="text"
-                     value={message}
-                     onChange={(e) => setMessage(e.target.value)}
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
                      onKeyDown={handleKeyDown}
                      placeholder="Ask anything..."
                      disabled={loading || !activeChatId && history.length > 0}
@@ -458,9 +477,9 @@ const App = () => {
                    >
                      <SendIcon />
                    </Button>
-              </div>
-           </div>
-        </div>
+      </div>
+      </div>
+    </div>
       </div> {/* End Main Chat Area Column */} 
     </div> // End Main Container Flex
   );

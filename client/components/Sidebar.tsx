@@ -14,6 +14,8 @@ interface SidebarProps {
   onNewChat: () => void;
   onSelectChat: (threadId: string) => void;
   onDeleteAllChats: () => void;
+  isOpen: boolean;             // Prop to control visibility
+  onToggle: () => void;        // Callback to toggle visibility
 }
 
 // Placeholder Icons (replace with actual icons)
@@ -39,10 +41,31 @@ const Sidebar: React.FC<SidebarProps> = ({
   activeChatId, 
   onNewChat, 
   onSelectChat, 
-  onDeleteAllChats
+  onDeleteAllChats,
+  isOpen,                      // Destructure props
+  onToggle                     // Destructure props
 }) => {
+
+  // Function to get the first ~3 words of a title
+  const getShortTitle = (title: string | undefined): string => {
+    if (!title) return 'Untitled Chat';
+    const words = title.split(' ');
+    if (words.length <= 3) {
+      return title;
+    }
+    return words.slice(0, 3).join(' ') + '...';
+  };
+
+  // Return null or minimal UI if not open
+  if (!isOpen) {
+    return null; // Or a very narrow collapsed state if desired later
+  }
+
+  // Render full sidebar if open
   return (
-    <div className="flex flex-col h-full w-64 bg-[--sidebar] text-[--sidebar-foreground] border-r border-[--sidebar-border]">
+    <div className="flex flex-col h-full w-64 bg-[--sidebar] text-[--sidebar-foreground] border-r border-[--sidebar-border] transition-all duration-300 ease-in-out">
+      {/* Maybe add a close button inside the sidebar too? Optional. */}
+      
       {/* New Chat Button */}
       <div className="p-3 border-b border-[--sidebar-border]">
         <Button 
@@ -68,11 +91,14 @@ const Sidebar: React.FC<SidebarProps> = ({
               key={session.threadId}
               variant={session.threadId === activeChatId ? "secondary" : "ghost"}
               size="sm"
-              className="w-full justify-start h-9"
+              className="w-full justify-start h-10"
               onClick={() => onSelectChat(session.threadId)}
+              title={session.title || 'Untitled Chat'}
             >
               <ChatBubbleIcon />
-              <span className="truncate flex-grow text-left ml-1">{session.title || 'Untitled Chat'}</span>
+              <span className="flex-grow text-left ml-1 truncate overflow-hidden whitespace-nowrap">
+                {getShortTitle(session.title)}
+              </span>
             </Button>
           ))}
         </nav>
